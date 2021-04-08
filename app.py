@@ -80,7 +80,7 @@ app.layout = html.Div(style={'backgroundColor': colors['background']}, children=
             }
         }
     ),
-    dcc.Graph( #graph of
+    dcc.Graph( #graph
             id='game_graph_2',
             figure={
                 'data': [
