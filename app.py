@@ -113,17 +113,6 @@ def update_output_div(genre_dropdown_value,rating_dropdown_value):
     return '{}'.format(len(games_df.loc[(games_df['Genre'].isin(list(genre_dropdown_value))) |\
                                         (games_df['Rating'].isin(list(rating_dropdown_value)))]))
 
-# @app.callback(
-#     Output(component_id='rating_selected', component_property='children'),
-#     Input(component_id='rating_dropdown', component_property='value')
-# )
-# def update_output_div(input_value):
-#     return html.H4(input_value)
-#     print(input_value)
-
-
-
-
 
 if __name__ == '__main__':
     app.run_server(debug=True)
