@@ -21,52 +21,58 @@ colors = {
 
 app.layout = html.Div(style={'backgroundColor': colors['background']}, children=[
     html.H1( #Dashboard Title
-        children='Games Dash',
+        children='Games Dasboard',
         style={
             'textAlign': 'left',
             'color': colors['text'],
-            'padding':'0.2em',
+            'margin-bottom':'10px',
         }
     ),
 
-    html.P('Explore the gaming industry by metrics such as: Genres, Ratings, Games by Platform and Year, Dependence of Genres on Player and Critics Reviews. Just choose the genres and ratings you are interested in.',
+    html.P('Explore the gaming industry by metrics such as: Genres, Ratings, Games by Platform and Year, Dependence of Genres on Player and Critics Reviews. Just select the genres and ratings you are interested in.',
         style={ #Dashboard Desc
             'margin':'0.5em',
             'width':'50%',
         }
     ),
-        dcc.Dropdown( #genre multiple choise list
-                    id='genre_dropdown',
-                    options=[
-                        {'label': 'New York City', 'value': 'NYC'},
-                        {'label': 'Montreal', 'value': 'MTL'},
-                        {'label': 'San Francisco', 'value': 'SF'}
-                    ],
-                    value='Choose game genres',
-                multi=True
-                ),
-        dcc.Dropdown( #rating multiple choise list
-                    id='rating_dropdown',
-                    options=[
-                        {'label': 'New York City', 'value': 'NYC'},
-                        {'label': 'Montreal', 'value': 'MTL'},
-                        {'label': 'San Francisco', 'value': 'SF'}
-                    ],
-                    value='Choose game ratings',
-                multi=True
-                ),
-    html.Br(),
-    html.P('Game Volume:',
-            style={
-                'margin':'0.5em',
-                'width':'50%',
-            }
-        ),
-    html.H4('25',style={'margin':'0.5em'}), #game volume text
+    html.Div(style={'width':'100%','height':'0.5px','background-color':'#e5e5e5','margin-bottom':'20px'}),
 
-    dcc.Graph( #graph
+    html.Div(style={'width':'20%','display':'flex','flex-direction':'row'},children=[
+
+        html.Label('Genre:',style={'padding':'5px'}),
+        dcc.Dropdown(style={'width':'250px'}, #genre multiple choise list
+            id='genre_dropdown',
+            options=[
+                {'label': 'New York City', 'value': 'NYC'},
+                    #genres from dataframe
+                ],
+            placeholder='Select game genres',
+            multi=True
+        ),
+
+        html.Label('Rating:',style={'padding':'5px'}),
+        dcc.Dropdown(style={'width':'250px'}, #rating multiple choise list
+            id='rating_dropdown',
+            options=[
+                {'label': 'New York City', 'value': 'NYC'},
+                    #ratings from dataframe
+                ],
+            placeholder='Select game ratings',
+            multi=True
+        )
+    ]),
+
+    html.Br(),
+
+    html.Div(style={'width':'10%','display':'flex','flex-direction':'row'},children=[
+        html.Label('Game Volume:',style={'margin':'0.5em',}),
+        html.B('25',style={'padding':'5px','font-size':'14pt'}), #game volume text
+    ]),
+
+    html.Div(style={'display':'flex','flex-direction':'row'},children=[
+    dcc.Graph(style={'width':'50%'}, #graph
         id='game_graph',
-        figure={
+        figure={ #Stacked area plot Games by Year and Platforms
             'data': [
                 {'x': [1, 2, 3], 'y': [4, 1, 2], 'type': 'bar', 'name': 'SF'},
                 {'x': [1, 2, 3], 'y': [2, 4, 5], 'type': 'bar', 'name': u'Montréal'},
@@ -74,34 +80,33 @@ app.layout = html.Div(style={'backgroundColor': colors['background']}, children=
             'layout': {
                 'plot_bgcolor': colors['background_graph'],
                 'paper_bgcolor': colors['background'],
-                'font': {
-                    'color': colors['text']
-                }
+                'title':'Games by Year and Platforms',
             }
         }
     ),
-    dcc.Graph( #graph of
+    dcc.Graph(style={'width':'50%'}, #graph
             id='game_graph_2',
-            figure={
+            figure={ #Scatter plot Scores by Gengers
                 'data': [
-                    {'x': [1, 2, 3,4,5,6,7,8,9,0], 'y': [4, 1, 2], 'type': 'bar', 'name': 'SF'},
+                    {'x': [1,2], 'y': [1,2,3,4], 'type': 'bar', 'name': 'SF'},
                     {'x': [1, 2, 3], 'y': [2, 4, 5], 'type': 'bar', 'name': u'Montréal'},
                 ],
                 'layout': {
                     'plot_bgcolor': colors['background_graph'],
                     'paper_bgcolor': colors['background'],
+                    'title': 'Scores by Genres',
                 }
             }
-        ),
+        )
+    ]),
+    html.Label('Release Dates:',style={'padding':'5px',}),
     dcc.DatePickerRange(
-        id="date-picker-select",
-        start_date=dt(2014, 1, 1),
-        end_date=dt(2014, 1, 15),
-        min_date_allowed=dt(2014, 1, 1),
-        max_date_allowed=dt(2014, 12, 31),
-        initial_visible_month=dt(2014, 1, 1),
+        start_date_placeholder_text="Start Date",
+        end_date_placeholder_text="End Date",
+        calendar_orientation='horizontal',
+        with_portal=True,
     ),
 ])
-
+#index
 if __name__ == '__main__':
     app.run_server(debug=True)
