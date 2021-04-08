@@ -2,12 +2,19 @@ import dash
 import dash_core_components as dcc
 import dash_html_components as html
 import pandas as pd
-from datetime import datetime as dt
+import plotly.express as px
 
+#df = pd.read_csv('games.csv')
+#fig = px.area(df, x="year", y="pop", color="continent",line_group="country")
 
 games_df = pd.read_csv('games.csv')
-games_df = games_df.dropna()
-games_df = games_df.loc[(games_df['Year_of_Release']>=2000)]
+games_df = games_df.loc[(games_df['Year_of_Release']>=2000)].dropna()
+
+platform_year_df = pd.DataFrame(games_df.groupby('Platform')['Year_of_Release'].value_counts()).rename(columns={'Year_of_Release':'Counts'}).reset_index()
+
+fig = px.area(platform_year_df, x="Year_of_Release", y="Counts", color="Platform",line_group="Platform")
+
+
 
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 
@@ -70,26 +77,15 @@ app.layout = html.Div(style={'backgroundColor': colors['background']}, children=
     ]),
 
     html.Div(style={'display':'flex','flex-direction':'row'},children=[
-    dcc.Graph(style={'width':'50%'}, #graph
+    dcc.Graph(figure=fig, style={'width':'50%'}, #graph
         id='game_graph',
-        figure={ #Stacked area plot Games by Year and Platforms
-            'data': [
-                {'x': [1, 2, 3], 'y': [4, 1, 2], 'type': 'bar', 'name': 'SF'},
-                {'x': [1, 2, 3], 'y': [2, 4, 5], 'type': 'bar', 'name': u'Montréal'},
-            ],
-            'layout': {
-                'plot_bgcolor': colors['background_graph'],
-                'paper_bgcolor': colors['background'],
-                'title':'Games by Year and Platforms',
-            }
-        }
     ),
     dcc.Graph(style={'width':'50%'}, #graph
             id='game_graph_2',
             figure={ #Scatter plot Scores by Gengers
                 'data': [
-                    {'x': [1,2], 'y': [1,2,3,4], 'type': 'bar', 'name': 'SF'},
-                    {'x': [1, 2, 3], 'y': [2, 4, 5], 'type': 'bar', 'name': u'Montréal'},
+                    {'x': [1,2], 'y': [1,2,3,4], 'type': 'line', 'name': 'SF'},
+                    {'x': [1, 2, 3], 'y': [2, 4, 5], 'type': 'line', 'name': u'Montréal'},
                 ],
                 'layout': {
                     'plot_bgcolor': colors['background_graph'],
@@ -99,6 +95,7 @@ app.layout = html.Div(style={'backgroundColor': colors['background']}, children=
             }
         )
     ]),
+
     html.Label('Release Dates:',style={'padding':'5px',}),
     dcc.DatePickerRange(
         start_date_placeholder_text="Start Date",
@@ -107,6 +104,7 @@ app.layout = html.Div(style={'backgroundColor': colors['background']}, children=
         with_portal=True,
     ),
 ])
+
 
 if __name__ == '__main__':
     app.run_server(debug=True)
