@@ -21,7 +21,7 @@ colors = {
 
 app.layout = html.Div(style={'backgroundColor': colors['background']}, children=[
     html.H1( #Dashboard Title
-        children='Games Dash',
+        children='Games Dasboard',
         style={
             'textAlign': 'left',
             'color': colors['text'],
@@ -35,9 +35,10 @@ app.layout = html.Div(style={'backgroundColor': colors['background']}, children=
             'width':'50%',
         }
     ),
-
     html.Div(style={'width':'100%','height':'0.5px','background-color':'#e5e5e5','margin-bottom':'20px'}),
+
     html.Div(style={'width':'20%','display':'flex','flex-direction':'row'},children=[
+
         html.Label('Genre:',style={'padding':'5px'}),
         dcc.Dropdown(style={'width':'250px'}, #genre multiple choise list
             id='genre_dropdown',
@@ -62,20 +63,16 @@ app.layout = html.Div(style={'backgroundColor': colors['background']}, children=
     ]),
 
     html.Br(),
-    html.Div(style={'display':'flex','flex-direction':'column'},children=[
-    html.Label('Game Volume:',
-                style={
-                    'margin':'0.5em',
-                    'width':'50%',
-                }
-            ),
-    html.B('25',style={'padding':'5px','font-size':'16pt'}), #game volume text
+
+    html.Div(style={'width':'10%','display':'flex','flex-direction':'row'},children=[
+        html.Label('Game Volume:',style={'margin':'0.5em',}),
+        html.B('25',style={'padding':'5px','font-size':'14pt'}), #game volume text
     ]),
 
     html.Div(style={'display':'flex','flex-direction':'row'},children=[
     dcc.Graph(style={'width':'50%'}, #graph
         id='game_graph',
-        figure={
+        figure={ #Stacked area plot Games by Year and Platforms
             'data': [
                 {'x': [1, 2, 3], 'y': [4, 1, 2], 'type': 'bar', 'name': 'SF'},
                 {'x': [1, 2, 3], 'y': [2, 4, 5], 'type': 'bar', 'name': u'Montréal'},
@@ -89,9 +86,9 @@ app.layout = html.Div(style={'backgroundColor': colors['background']}, children=
     ),
     dcc.Graph(style={'width':'50%'}, #graph
             id='game_graph_2',
-            figure={
+            figure={ #Scatter plot Scores by Gengers
                 'data': [
-                    {'x': [1, 2, 3,4,5,6,7,8,9,0], 'y': [4, 1, 2], 'type': 'bar', 'name': 'SF'},
+                    {'x': [1,2], 'y': [1,2,3,4], 'type': 'bar', 'name': 'SF'},
                     {'x': [1, 2, 3], 'y': [2, 4, 5], 'type': 'bar', 'name': u'Montréal'},
                 ],
                 'layout': {
@@ -102,13 +99,12 @@ app.layout = html.Div(style={'backgroundColor': colors['background']}, children=
             }
         )
     ]),
+    html.Label('Release Dates:',style={'padding':'5px',}),
     dcc.DatePickerRange(
-        id="date-picker-select",
-        start_date=dt(2014, 1, 1),
-        end_date=dt(2014, 1, 15),
-        min_date_allowed=dt(2014, 1, 1),
-        max_date_allowed=dt(2014, 12, 31),
-        initial_visible_month=dt(2014, 1, 1),
+        start_date_placeholder_text="Start Date",
+        end_date_placeholder_text="End Date",
+        calendar_orientation='horizontal',
+        with_portal=True,
     ),
 ])
 
