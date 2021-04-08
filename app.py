@@ -107,6 +107,6 @@ app.layout = html.Div(style={'backgroundColor': colors['background']}, children=
         with_portal=True,
     ),
 ])
-#index
+
 if __name__ == '__main__':
     app.run_server(debug=True)
