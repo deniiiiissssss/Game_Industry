@@ -1,0 +1,107 @@
+{\rtf1\ansi\ansicpg1251\cocoartf2578
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fnil\fcharset0 Menlo-Regular;\f1\fswiss\fcharset0 Arial-BoldMT;\f2\fswiss\fcharset0 ArialMT;
+}
+{\colortbl;\red255\green255\blue255;\red0\green0\blue0;\red38\green38\blue38;\red255\green255\blue255;
+\red26\green26\blue26;}
+{\*\expandedcolortbl;;\csgray\c0;\cssrgb\c20000\c20000\c20000;\cssrgb\c100000\c100000\c100000;
+\cssrgb\c13333\c13333\c13333;}
+\paperw11900\paperh16840\margl1440\margr1440\vieww17540\viewh14760\viewkind0
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural\partightenfactor0
+
+\f0\fs24 \cf2 \CocoaLigature0 \
+1 \uc0\u1079 \u1072 \u1076 \u1072 \u1085 \u1080 \u1077 :\
+\
+select city from city_population where population = (select MIN(population) from city_population);\
+\
+\
+\
+\
+create database if not exists cities;\
+\
+use cities;\
+\
+create table `city_population` (\
+  `city` varchar(255) DEFAULT NULL,\
+  `population` int DEFAULT NULL\
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;\
+\
+insert into\
+	city_population(city, population)\
+values\
+('\uc0\u1052 \u1086 \u1089 \u1082 \u1074 \u1072 ', 12615279),\
+('\uc0\u1057 \u1072 \u1085 \u1082 \u1090 -\u1055 \u1077 \u1090 \u1077 \u1088 \u1073 \u1091 \u1088 \u1075 ', 5383890),\
+('\uc0\u1053 \u1086 \u1074 \u1086 \u1089 \u1080 \u1073 \u1080 \u1088 \u1089 \u1082 ', 1618039),\
+('\uc0\u1045 \u1082 \u1072 \u1090 \u1077 \u1088 \u1080 \u1085 \u1073 \u1091 \u1088 \u1075 ', 1483119),\
+('\uc0\u1050 \u1072 \u1079 \u1072 \u1085 \u1100 ', 1251969),\
+('\uc0\u1053 \u1080 \u1078 \u1085 \u1080 \u1081  \u1053 \u1086 \u1074 \u1075 \u1086 \u1088 \u1086 \u1076 ', 1253511),\
+('\uc0\u1063 \u1077 \u1083 \u1103 \u1073 \u1080 \u1085 \u1089 \u1082 ', 1200719),\
+('\uc0\u1057 \u1072 \u1084 \u1072 \u1088 \u1072 ', 1156608),\
+('\uc0\u1054 \u1084 \u1089 \u1082 ', 1164815),\
+('\uc0\u1056 \u1086 \u1089 \u1090 \u1086 \u1074 -\u1085 \u1072 -\u1044 \u1086 \u1085 \u1091 ', 1133307),\
+('\uc0\u1059 \u1092 \u1072 ', 1124226),\
+('\uc0\u1050 \u1088 \u1072 \u1089 \u1085 \u1086 \u1103 \u1088 \u1089 \u1082 ', 1095286),\
+('\uc0\u1042 \u1086 \u1088 \u1086 \u1085 \u1077 \u1078 ', 1054111),\
+('\uc0\u1055 \u1077 \u1088 \u1084 \u1100 ', 1053934),\
+('\uc0\u1042 \u1086 \u1083 \u1075 \u1086 \u1075 \u1088 \u1072 \u1076 ', 1013468);\
+    \
+select city from city_population where population = (select MIN(population) from city_population);\
+\
+\
+2 \uc0\u1079 \u1072 \u1076 \u1072 \u1085 \u1080 \u1077 : \
+\pard\pardeftab720\partightenfactor0
+
+\f1\b\fs42 \cf3 \cb4 \expnd0\expndtw0\kerning0
+\CocoaLigature1 \outl0\strokewidth0 \strokec3 \uc0\u1050 \u1086 \u1101 \u1092 \u1092 \u1080 \u1094 \u1080 \u1077 \u1085 \u1090  \u1091 \u1076 \u1077 \u1088 \u1078 \u1072 \u1085 \u1080 \u1103  \u1082 \u1083 \u1080 \u1077 \u1085 \u1090 \u1086 \u1074  = \u1050 \u1086 \u1083 \u1080 \u1095 \u1077 \u1089 \u1090 \u1074 \u1086  \u1082 \u1083 \u1080 \u1077 \u1085 \u1090 \u1086 \u1074  \u1074 \'a0\u1082 \u1086 \u1085 \u1094 \u1077  \u1087 \u1077 \u1088 \u1080 \u1086 \u1076 \u1072  \'97 \u1050 \u1086 \u1083 \u1080 \u1095 \u1077 \u1089 \u1090 \u1074 \u1086  \u1082 \u1083 \u1080 \u1077 \u1085 \u1090 \u1086 \u1074 , \u1087 \u1088 \u1080 \u1086 \u1073 \u1088 \u1077 \u1090 \u1077 \u1085 \u1085 \u1099 \u1093  \u1074 \'a0\u1090 \u1077 \u1095 \u1077 \u1085 \u1080 \u1077  \u1087 \u1077 \u1088 \u1080 \u1086 \u1076 \u1072  / \u1050 \u1086 \u1083 \u1080 \u1095 \u1077 \u1089 \u1090 \u1074 \u1086  \u1082 \u1083 \u1080 \u1077 \u1085 \u1090 \u1086 \u1074  \u1074 \'a0\u1085 \u1072 \u1095 \u1072 \u1083 \u1077  \u1087 \u1077 \u1088 \u1080 \u1086 \u1076 \u1072  X\'a0100%
+\f0\b0\fs24 \cf2 \cb1 \kerning1\expnd0\expndtw0 \CocoaLigature0 \outl0\strokewidth0 \
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural\partightenfactor0
+\
+\
+\
+\pard\pardeftab720\partightenfactor0
+
+\f2\fs29\fsmilli14667 \cf5 \cb4 \expnd0\expndtw0\kerning0
+\CocoaLigature1 \outl0\strokewidth0 \strokec5 1 table: user (user_id \'97 id \uc0\u1087 \u1086 \u1083 \u1100 \u1079 \u1086 \u1074 \u1072 \u1090 \u1077 \u1083 \u1103 , installed_at \'97 \u1076 \u1072 \u1090 \u1072  \u1091 \u1089 \u1090 \u1072 \u1085 \u1086 \u1074 \u1082 \u1080 ) 
+\f0\fs24 \cf2 \cb1 \kerning1\expnd0\expndtw0 \CocoaLigature0 \outl0\strokewidth0 \
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural\partightenfactor0
+2 table: client_session (user_id, created_at \'97 \uc0\u1090 \u1072 \u1081 \u1084 \u1089 \u1090 \u1077 \u1084 \u1087  \u1072 \u1082 \u1090 \u1080 \u1074 \u1085 \u1086 \u1089 \u1090 \u1080 ).\
+\
+\
+\
+\
+create database if not exists cities;\
+\
+use cities;\
+\
+create table `user` (\
+  `user_id` int DEFAULT NULL,\
+  `installed_at` datetime DEFAULT NULL\
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;\
+\
+create table `client_session` (\
+  `user_id` int DEFAULT NULL,\
+  `created_at` timestamp DEFAULT NULL\
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;\
+\
+\
+\
+insert into\
+	city_population(city, population)\
+values\
+('\uc0\u1052 \u1086 \u1089 \u1082 \u1074 \u1072 ', 12615279),\
+('\uc0\u1057 \u1072 \u1085 \u1082 \u1090 -\u1055 \u1077 \u1090 \u1077 \u1088 \u1073 \u1091 \u1088 \u1075 ', 5383890),\
+('\uc0\u1053 \u1086 \u1074 \u1086 \u1089 \u1080 \u1073 \u1080 \u1088 \u1089 \u1082 ', 1618039),\
+('\uc0\u1045 \u1082 \u1072 \u1090 \u1077 \u1088 \u1080 \u1085 \u1073 \u1091 \u1088 \u1075 ', 1483119),\
+('\uc0\u1050 \u1072 \u1079 \u1072 \u1085 \u1100 ', 1251969),\
+('\uc0\u1053 \u1080 \u1078 \u1085 \u1080 \u1081  \u1053 \u1086 \u1074 \u1075 \u1086 \u1088 \u1086 \u1076 ', 1253511),\
+('\uc0\u1063 \u1077 \u1083 \u1103 \u1073 \u1080 \u1085 \u1089 \u1082 ', 1200719),\
+('\uc0\u1057 \u1072 \u1084 \u1072 \u1088 \u1072 ', 1156608),\
+('\uc0\u1054 \u1084 \u1089 \u1082 ', 1164815),\
+('\uc0\u1056 \u1086 \u1089 \u1090 \u1086 \u1074 -\u1085 \u1072 -\u1044 \u1086 \u1085 \u1091 ', 1133307),\
+('\uc0\u1059 \u1092 \u1072 ', 1124226),\
+('\uc0\u1050 \u1088 \u1072 \u1089 \u1085 \u1086 \u1103 \u1088 \u1089 \u1082 ', 1095286),\
+('\uc0\u1042 \u1086 \u1088 \u1086 \u1085 \u1077 \u1078 ', 1054111),\
+('\uc0\u1055 \u1077 \u1088 \u1084 \u1100 ', 1053934),\
+('\uc0\u1042 \u1086 \u1083 \u1075 \u1086 \u1075 \u1088 \u1072 \u1076 ', 1013468);\
+    \
+select city from city_population where population = (select MIN(population) from city_population);\
+}
