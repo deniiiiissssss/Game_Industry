@@ -11,15 +11,6 @@ games_df = pd.read_csv('games.csv')
 games_df = games_df.loc[(games_df['Year_of_Release']>=2000)].dropna()\
     .rename(columns={'User_Score':'User Score','Critic_Score':'Critic Score'})
 
-platform_year_df = games_df.groupby(["Platform", "Year_of_Release"]).size().reset_index(name="Volume")
-
-platform_year_fig = px.area(platform_year_df, x='Year_of_Release', y='Volume', color='Platform',\
-              title="Games Volume by Platform and Year")
-
-
-scores_genres_fig = px.scatter(games_df, x="User Score", y="Critic Score", color="Genre",\
-                               title="Scores by Gengers")
-
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 
 app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
@@ -60,6 +51,7 @@ app.layout = html.Div(style={'backgroundColor': colors['background']}, children=
             placeholder='Select game genres',
             multi=True,
             searchable=True,
+            value=games_df.Genre.unique()[0],
         ),
         html.Div(id='genre_selected'),
 
@@ -72,6 +64,7 @@ app.layout = html.Div(style={'backgroundColor': colors['background']}, children=
             placeholder='Select game ratings',
             multi=True,
             searchable=True,
+            value=games_df.Rating.unique()[0],
         ),
         html.Div(id='rating_selected'),
 
@@ -81,7 +74,7 @@ app.layout = html.Div(style={'backgroundColor': colors['background']}, children=
 
     html.Div(style={'width':'10%','display':'flex','flex-direction':'row'},children=[
         html.Label('Games Volume:',style={'margin':'0.5em',}),
-        html.Div(id='games_volume_selected',style={'padding':'5px','font-size':'14pt'}), #game volume text
+        html.Div(id='games_volume_selected',style={'padding':'5px','font-size':'14pt'}), #games volume
     ]),
 
     html.Div(style={'display':'flex','flex-direction':'row'},children=[
@@ -104,14 +97,27 @@ app.layout = html.Div(style={'backgroundColor': colors['background']}, children=
     ),
 ])
 
+
+
+platform_year_df = games_df.groupby(["Platform", "Year_of_Release"]).size().reset_index(name="Volume")
+
+platform_year_fig = px.area(platform_year_df, x='Year_of_Release', y='Volume', color='Platform',\
+              title="Games Volume by Platform and Year")
+
+
+scores_genres_fig = px.scatter(games_df, x="User Score", y="Critic Score", color="Genre",\
+                               title="Scores by Gengers")
+
 @app.callback(
     Output(component_id='games_volume_selected', component_property='children'),
     Input(component_id='genre_dropdown', component_property='value'),
-    Input(component_id='rating_dropdown', component_property='value')
-)
-def update_output_div(genre_dropdown_value,rating_dropdown_value):
-    return '{}'.format(len(games_df.loc[(games_df['Genre'].isin(list(genre_dropdown_value))) |\
-                                        (games_df['Rating'].isin(list(rating_dropdown_value)))]))
+    Input(component_id='rating_dropdown', component_property='value'))
+def display(genre_dropdown, rating_dropdown):
+    if genre_dropdown == None or rating_dropdown == None:
+        return 0
+    else:
+        print(genre_dropdown,rating_dropdown)
+        return '{}'.format(len(games_df.loc[(games_df['Genre'].isin(list(genre_dropdown))) | (games_df['Rating'].isin(list(rating_dropdown)))]))
 
 
 if __name__ == '__main__':
