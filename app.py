@@ -61,7 +61,6 @@ app.layout = html.Div(style={'backgroundColor': colors['background']}, children=
     html.Div(style={'width': '10%', 'display': 'flex', 'flex-direction': 'row'}, children=[
         html.Label('Games Volume:', style={'margin': '0.5em', }),
         html.Div(id='games_volume_selected', style={'padding': '5px', 'font-size': '14pt'}),  # games volume
-        html.Div(id='rating_volume_selected', style={'padding': '5px', 'font-size': '14pt'}),  # rating volume
     ]),
 
     html.Div(style={'display': 'flex', 'flex-direction': 'row'}, children=[
@@ -74,16 +73,16 @@ app.layout = html.Div(style={'backgroundColor': colors['background']}, children=
     ]),
 
     html.Label('Release Dates:', style={'padding': '5px'}),
-    # dcc.RangeSlider(
-    #     max=len(games_df['Year_of_Release'].sort_values().unique()),
-    #     step=None,
-    #     marks=[{'label': i, 'value': i} for i in games_df['Year_of_Release'].astype(int).sort_values().unique()],
-    # )
+    dcc.RangeSlider(
+        max=len(games_df['Year_of_Release'].sort_values().unique()),
+        step=None,
+        marks=[{'label': i, 'value': i} for i in games_df['Year_of_Release'].astype(int).sort_values().unique()],
+    )
 ])
 
 
 @app.callback(
-    [Output('rating_volume_selected', 'children'),
+    [Output('games_volume_selected', 'children'),
      Output('game_graph', 'figure'),
      Output('scores_graph', 'figure')],
     [Input('genre_dropdown', 'value'),
