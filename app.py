@@ -74,56 +74,36 @@ app.layout = html.Div(style={'backgroundColor': colors['background']}, children=
     ]),
 
     html.Label('Release Dates:', style={'padding': '5px'}),
-    dcc.RangeSlider(
-        min=0,
-        max=10,
-        step=None,
-        marks={
-            0: '0 °F',
-            3: '3 °F',
-            5: '5 °F',
-            7.65: '7.65 °F',
-            10: '10 °F'
-        },
-        value=[3, 7.65]
-    )
+    # dcc.RangeSlider(
+    #     max=len(games_df['Year_of_Release'].sort_values().unique()),
+    #     step=None,
+    #     marks=[{'label': i, 'value': i} for i in games_df['Year_of_Release'].astype(int).sort_values().unique()],
+    # )
 ])
 
 
 @app.callback(
-    Output('rating_volume_selected', 'children'),
-    [Input('genre_dropdown', 'value'),
-     Input('rating_dropdown', 'value')]
-)
-def display_volume(genre_dropdown, rating_dropdown):
-    if not rating_dropdown and not genre_dropdown:
-        cn_df = len(games_df)
-    elif not rating_dropdown or not genre_dropdown:
-        cn_df = len(games_df.loc[(games_df.Rating.isin(list(rating_dropdown))) | (games_df.Genre.isin(list(genre_dropdown)))])
-    else:
-        cn_df = len(games_df.loc[(games_df.Rating.isin(list(rating_dropdown))) & (games_df.Genre.isin(list(genre_dropdown)))])
-    return cn_df
-
-@app.callback(
-    [Output('game_graph', 'figure'),
+    [Output('rating_volume_selected', 'children'),
+     Output('game_graph', 'figure'),
      Output('scores_graph', 'figure')],
     [Input('genre_dropdown', 'value'),
      Input('rating_dropdown', 'value')]
 )
-def display_figures(genre_dropdown, rating_dropdown):
+def display_data(genre_dropdown, rating_dropdown):
     if not rating_dropdown and not genre_dropdown:
         cn_df_f = games_df
     elif not rating_dropdown or not genre_dropdown:
         cn_df_f = games_df.loc[(games_df.Rating.isin(list(rating_dropdown))) | (games_df.Genre.isin(list(genre_dropdown)))]
     else:
         cn_df_f = games_df.loc[(games_df.Rating.isin(list(rating_dropdown))) & (games_df.Genre.isin(list(genre_dropdown)))]
-    print(len(cn_df_f))
+
     platform_year_df = cn_df_f.groupby(["Platform", "Year_of_Release"], as_index=False).size()
     pl_ye_fig = px.area(platform_year_df, x='Year_of_Release', y='size', color='Platform', \
                         title="Games Volume by Platform and Year")
-    sc_gn_fig = px.scatter(cn_df_f, x="User_Score", y="Critic_Score", color="Genre", \
+    sc_gn_fig = px.scatter(cn_df_f, x="User_Score", y="Critic_Score", color="Genre", hover_data=['Name'],\
                            title="Scores by Gengers")
-    return pl_ye_fig, sc_gn_fig
+    return len(cn_df_f), pl_ye_fig, sc_gn_fig
+
 
 if __name__ == '__main__':
     app.run_server(debug=True)
