@@ -18,6 +18,7 @@ colors = {
 # MAIN DATAFRAME
 games_df = pd.read_csv('games.csv')
 games_df = games_df.loc[(games_df['Year_of_Release'] >= 2000)].dropna()
+games_df['Year_of_Release'] = games_df['Year_of_Release'].astype(int)
 
 app.layout = html.Div(style={'backgroundColor': colors['background']}, children=[
     html.H1(  # Dashboard Title
@@ -27,7 +28,7 @@ app.layout = html.Div(style={'backgroundColor': colors['background']}, children=
     html.P(
         'Explore the gaming industry by metrics such as: Genres, Ratings, Games by Platform and Year, Dependence of Genres on Player and Critics Reviews. Just select the genres and ratings you are interested in.',
         style={'margin': '0.5em', 'width': '50%', }  # Dashboard Desc
-        ),
+    ),
     html.Div(style={'width': '100%', 'height': '0.5px', 'background-color': '#e5e5e5', 'margin-bottom': '20px'}),
     # Simple line
 
@@ -41,6 +42,7 @@ app.layout = html.Div(style={'backgroundColor': colors['background']}, children=
                      placeholder='Select game genres',
                      multi=True,
                      searchable=True,
+                     value = games_df.Genre.unique()
                      ),
         html.Label('Rating:', style={'padding': '5px'}),
         dcc.Dropdown(style={'width': '100%'},  # rating multiple choise list
@@ -50,7 +52,7 @@ app.layout = html.Div(style={'backgroundColor': colors['background']}, children=
                      ],
                      placeholder='Select game ratings',
                      multi=True,
-                     searchable=True,
+                     value = games_df.Rating.unique(),
                      ),
     ]),
 
@@ -62,64 +64,45 @@ app.layout = html.Div(style={'backgroundColor': colors['background']}, children=
         html.Div(id='rating_volume_selected', style={'padding': '5px', 'font-size': '14pt'}),  # rating volume
     ]),
 
-    html.Div(style={'display':'flex','flex-direction':'row'},children=[
-        dcc.Graph(style={'width':'50%'}, #graph
-            id='game_graph',
-        ),
-        dcc.Graph(style={'width':'50%'}, #graph
-                id='scores_graph',
-            )
+    html.Div(style={'display': 'flex', 'flex-direction': 'row'}, children=[
+        dcc.Graph(style={'width': '50%'},  # graph
+                  id='game_graph',
+                  ),
+        dcc.Graph(style={'width': '50%'},  # graph
+                  id='scores_graph',
+                  )
     ]),
 
     html.Label('Release Dates:', style={'padding': '5px'}),
-    dcc.DatePickerRange(
-        id="gade_range",
-        start_date_placeholder_text='Start Date',
-        end_date_placeholder_text='End Date',
-        calendar_orientation='horizontal',
-        with_portal=True,
-    ),
+    # dcc.RangeSlider(
+    #     max=len(games_df['Year_of_Release'].sort_values().unique()),
+    #     step=None,
+    #     marks=[{'label': i, 'value': i} for i in games_df['Year_of_Release'].astype(int).sort_values().unique()],
+    # )
 ])
 
-@app.callback(
-    Output('rating_volume_selected', 'children'),
-    [Input('genre_dropdown', 'value'),
-     Input('rating_dropdown', 'value')]
-)
-def display_volume(genre_dropdown, rating_dropdown):
-    if rating_dropdown is None and genre_dropdown is None:
-        cn_df = len(games_df)
-    elif rating_dropdown is None or genre_dropdown is None:
-        cn_df = len(games_df.loc[(games_df.Rating.isin(list(rating_dropdown))) | (games_df.Genre.isin(list(genre_dropdown)))])
-    else:
-        cn_df = len(games_df.loc[(games_df.Rating.isin(list(rating_dropdown))) & (games_df.Genre.isin(list(genre_dropdown)))])
-    return cn_df
 
 @app.callback(
-    [Output('game_graph', 'figure'),
+    [Output('rating_volume_selected', 'children'),
+     Output('game_graph', 'figure'),
      Output('scores_graph', 'figure')],
     [Input('genre_dropdown', 'value'),
      Input('rating_dropdown', 'value')]
 )
-def display_figures(genre_dropdown, rating_dropdown):
-    if rating_dropdown is None and genre_dropdown is None:
+def display_data(genre_dropdown, rating_dropdown):
+    if not rating_dropdown and not genre_dropdown:
         cn_df_f = games_df
-    elif rating_dropdown is None and genre_dropdown is not None:
+    elif not rating_dropdown or not genre_dropdown:
         cn_df_f = games_df.loc[(games_df.Rating.isin(list(rating_dropdown))) | (games_df.Genre.isin(list(genre_dropdown)))]
     else:
         cn_df_f = games_df.loc[(games_df.Rating.isin(list(rating_dropdown))) & (games_df.Genre.isin(list(genre_dropdown)))]
-    print(cn_df_f)
+
     platform_year_df = cn_df_f.groupby(["Platform", "Year_of_Release"], as_index=False).size()
-    pl_ye_fig = px.area(platform_year_df, x='Year_of_Release', y='size', color='Platform',\
-                  title="Games Volume by Platform and Year")
-    sc_gn_fig = px.scatter(cn_df_f, x="User_Score", y="Critic_Score", color="Genre",\
-                                   title="Scores by Gengers")
-    return pl_ye_fig, sc_gn_fig
-
-
-
-
-
+    pl_ye_fig = px.area(platform_year_df, x='Year_of_Release', y='size', color='Platform', \
+                        title="Games Volume by Platform and Year")
+    sc_gn_fig = px.scatter(cn_df_f, x="User_Score", y="Critic_Score", color="Genre", hover_data=['Name'],\
+                           title="Scores by Gengers")
+    return len(cn_df_f), pl_ye_fig, sc_gn_fig
 
 
 if __name__ == '__main__':
