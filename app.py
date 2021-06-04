@@ -144,7 +144,7 @@ def display_data(genre_dropdown, rating_dropdown,platform_dropdown):
                            x="User_Score",
                            y="Critic_Score",
                            color="Genre",
-                           hover_data=['Name'],\
+                           hover_data=['Name'],
                            title="Scores by Genres")
     gm_table = dash_table.DataTable(
         columns=[{"name": i, "id": i} for i in cn_df_f.columns],
